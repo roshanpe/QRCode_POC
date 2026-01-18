@@ -1,6 +1,7 @@
 using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using System.Runtime.Versioning;
 
 namespace QR.Controllers
 {
@@ -22,6 +23,7 @@ namespace QR.Controllers
         /// <param name="email">Person's email address</param>
         /// <param name="dateOfBirth">Person's date of birth (yyyy-MM-dd format)</param>
         /// <returns>File path of the generated QR code image</returns>
+        [SupportedOSPlatform("windows")]
         [HttpPost("generate")]
         [ProducesResponseType(typeof(QRCodeResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -39,7 +41,7 @@ namespace QR.Controllers
 
             try
             {
-                string filePath = _qrCodeService.GenerateQRCode(name, email, dob);
+                string filePath =    _qrCodeService.GenerateQRCode(name, email, dob);
                 return Ok(new QRCodeResponse { FilePath = filePath, Message = "QR Code generated successfully" });
             }
             catch (Exception ex)
@@ -51,6 +53,7 @@ namespace QR.Controllers
         /// <summary>
         /// Generate a QR code as a byte array
         /// </summary>
+        [SupportedOSPlatform("windows")]
         [HttpPost("generate-bytes")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -102,12 +105,12 @@ namespace QR.Controllers
 
     public class QRCodeResponse
     {
-        public string FilePath { get; set; }
-        public string Message { get; set; }
+        public required string FilePath { get; set; }
+        public string? Message { get; set; }
     }
 
     public class VCardResponse
     {
-        public string VCard { get; set; }
+        public string? VCard { get; set; }
     }
 }
