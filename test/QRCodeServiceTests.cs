@@ -79,7 +79,7 @@ public class QRCodeServiceTests
         // Assert
         Assert.NotNull(filePath);
         Assert.NotEmpty(filePath);
-        Assert.Contains(filePath,"QRCode_");
+        Assert.Contains("QRCode_", filePath);
 
         // Cleanup
         if (File.Exists(filePath))
